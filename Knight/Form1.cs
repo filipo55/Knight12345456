@@ -13,10 +13,11 @@ namespace Knight
     public partial class Form1 : Form
     {
         private int[,] board = new int [8,8];
+        private int[,] board_elem = new int[8, 8];
         private Point Knight;
         private Random rand = new Random();
         private List<PictureBox> Boxes;
-        private int bsize;
+        private int bsize = 8;
 
         public Form1()
         {
@@ -102,6 +103,37 @@ namespace Knight
             NewGame(bsize);
         }
 
+        private void LoadKnight(PictureBox box)
+        {
+            Bitmap src = Properties.Resources.knight;
+            box.Image = src;
+            box.SizeMode = PictureBoxSizeMode.StretchImage;
+            src.MakeTransparent();
+            box.Image = src;
+            box.SizeMode = PictureBoxSizeMode.StretchImage;
+
+        }
+
+        private void putKnight()
+        {
+            int pos = 0;
+            bool knightPlaced = false;
+            while (knightPlaced == false)
+            {
+                if (Boxes.ElementAt(pos).BackColor == Color.ForestGreen)
+                {
+                    LoadKnight(Boxes.ElementAt(pos));
+                    Knight = (Point)Boxes.ElementAt(pos).Tag;
+                    knightPlaced = true;
+                }
+                else
+                    pos += 1;
+            }
+        }
+
+
+
+
         private void settingsToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             Form2 Settings = new Form2();
@@ -128,6 +160,25 @@ namespace Knight
             }
 
         }
+
+        private void MovingKnight(int direction)
+        {
+            if(direction==0)
+            {
+                
+
+
+
+            }
+
+
+
+
+
+
+        }
+
+
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
