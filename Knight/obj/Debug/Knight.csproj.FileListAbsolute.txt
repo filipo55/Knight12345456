@@ -1,1 +1,10 @@
 C:\Users\Filip\Documents\Visual Studio 2015\Projects\Grafika\Knight\Knight\bin\Debug\Knight.exe.config
+C:\Users\Filip\Documents\Visual Studio 2015\Projects\Grafika\Knight\Knight\bin\Debug\Knight.exe
+C:\Users\Filip\Documents\Visual Studio 2015\Projects\Grafika\Knight\Knight\bin\Debug\Knight.pdb
+C:\Users\Filip\Documents\Visual Studio 2015\Projects\Grafika\Knight\Knight\obj\Debug\Knight.csprojResolveAssemblyReference.cache
+C:\Users\Filip\Documents\Visual Studio 2015\Projects\Grafika\Knight\Knight\obj\Debug\Knight.Form1.resources
+C:\Users\Filip\Documents\Visual Studio 2015\Projects\Grafika\Knight\Knight\obj\Debug\Knight.Form2.resources
+C:\Users\Filip\Documents\Visual Studio 2015\Projects\Grafika\Knight\Knight\obj\Debug\Knight.Properties.Resources.resources
+C:\Users\Filip\Documents\Visual Studio 2015\Projects\Grafika\Knight\Knight\obj\Debug\Knight.csproj.GenerateResource.Cache
+C:\Users\Filip\Documents\Visual Studio 2015\Projects\Grafika\Knight\Knight\obj\Debug\Knight.exe
+C:\Users\Filip\Documents\Visual Studio 2015\Projects\Grafika\Knight\Knight\obj\Debug\Knight.pdb

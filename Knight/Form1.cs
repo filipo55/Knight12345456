@@ -12,15 +12,16 @@ namespace Knight
 {
     public partial class Form1 : Form
     {
-        private int[,] board;
+        private int[,] board = new int [8,8];
         private Point Knight;
         private Random rand = new Random();
         private List<PictureBox> Boxes;
-
+        private int bsize;
 
         public Form1()
         {
             InitializeComponent();
+            NewGame(8);
         }
 
       
@@ -36,7 +37,7 @@ namespace Knight
             for(int i =0; i<tableLayoutPanel1.ColumnCount;i++)
             {
                 tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, (float) 100.0 / board.GetLength(0)));
-                tableLayoutPanel1.ColumnStyles.Add(new RowStyle(SizeType.Percent, (float)100.0 / board.GetLength(1)));
+                tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, (float)100.0 / board.GetLength(1)));
                 for(int j = 0; j<tableLayoutPanel1.RowCount;j++)
                 {
                     PictureBox box = new PictureBox
@@ -78,28 +79,95 @@ namespace Knight
 
 
         }
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            if (close(false) == true)
+                this.Dispose(true);
+            else
+                e.Cancel = true;
+        }
 
+        private bool close(bool can)
+        {
+            if (MessageBox.Show("Do you want to close?", "Cancel game", MessageBoxButtons.YesNo, MessageBoxIcon.Question) ==
+                DialogResult.Yes)
+                can = true;
+            else
+                can = false;
+            return can;
+        }
 
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Form2 Settings = new Form2();
-            DialogResult res = Settings.ShowDialog(this);
-
-
-            if (Settings.comboBox1.SelectedIndex == 0)
-            {
-                NewGame(8);
-            }
-            if (Settings.comboBox1.SelectedIndex == 1)
-            {
-                NewGame(10);
-            }
-            if (Settings.comboBox1.SelectedIndex == 2)
-            {
-                NewGame(12);
-            }
+            NewGame(bsize);
         }
 
+        private void settingsToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Form2 Settings = new Form2();
+            DialogResult res = Settings.ShowDialog(this);
+            if (res == DialogResult.Abort)
+                Settings.Close();
+            else
+            {
+                if (Settings.comboBox1.SelectedIndex == 0)
+                {
+                    NewGame(8);
+                    bsize = 8;
+                }
+                if (Settings.comboBox1.SelectedIndex == 1)
+                {
+                    NewGame(10);
+                    bsize = 10;
+                }
+                if (Settings.comboBox1.SelectedIndex == 2)
+                {
+                    NewGame(12);
+                    bsize = 12;
+                }
+            }
 
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            switch (keyData)
+            {
+                case (Keys.Control | Keys.N):
+                    NewGame(bsize);
+                    return true;
+                case (Keys.Control | Keys.M):
+                    {
+                        Form2 Settings = new Form2();
+                        DialogResult res = Settings.ShowDialog(this);
+                        if (res == DialogResult.Abort)
+                            Settings.Close();
+                        else
+                        {
+                            if (Settings.comboBox1.SelectedIndex == 0)
+                            {
+                                NewGame(8);
+                                bsize = 8;
+                            }
+                            if (Settings.comboBox1.SelectedIndex == 1)
+                            {
+                                NewGame(10);
+                                bsize = 10;
+                            }
+                            if (Settings.comboBox1.SelectedIndex == 2)
+                            {
+                                NewGame(12);
+                                bsize = 12;
+                            }
+                        }
+                    }
+                
+                    return true;
+                    //case (Keys.Left):
+
+
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
     }
 }
