@@ -18,6 +18,7 @@ namespace Knight
         private Random rand = new Random();
         private List<PictureBox> Boxes;
         private int bsize = 8;
+        private int knight_direction = 1;
 
         public Form1()
         {
@@ -60,6 +61,7 @@ namespace Knight
                 }
 
             }
+            putKnight();
         }
 
         private void Margin(Control contr)
@@ -103,14 +105,17 @@ namespace Knight
             NewGame(bsize);
         }
 
-        private void LoadKnight(PictureBox box)
+        private void LoadKnight(PictureBox box, int position)
         {
-            Bitmap src = Properties.Resources.knight;
+            Bitmap src;
+            if (position == 1)
+                src = Properties.Resources.knight;
+            else
+                src = Properties.Resources.knight2;
             box.Image = src;
             box.SizeMode = PictureBoxSizeMode.StretchImage;
             src.MakeTransparent();
-            box.Image = src;
-            box.SizeMode = PictureBoxSizeMode.StretchImage;
+           
 
         }
 
@@ -122,7 +127,7 @@ namespace Knight
             {
                 if (Boxes.ElementAt(pos).BackColor == Color.ForestGreen)
                 {
-                    LoadKnight(Boxes.ElementAt(pos));
+                    LoadKnight(Boxes.ElementAt(pos), knight_direction);
                     Knight = (Point)Boxes.ElementAt(pos).Tag;
                     knightPlaced = true;
                 }
@@ -163,22 +168,59 @@ namespace Knight
 
         private void MovingKnight(int direction)
         {
-            if(direction==0)
+            PictureBox knight = (PictureBox)tableLayoutPanel1.GetControlFromPosition(Knight.Y, Knight.X);
+            //Down
+            if (direction==0)
             {
                 
-
-
-
+                PictureBox knight_new = (PictureBox)tableLayoutPanel1.GetControlFromPosition(Knight.Y, Knight.X+1);
+                if(knight_new.BackColor == Color.ForestGreen)
+                {
+                    Knight.X++;
+                    knight.Image = null;
+                    LoadKnight(knight_new, knight_direction);
+                }
             }
-
-
-
-
-
-
+            //Up
+            if(direction==1)
+            {
+                PictureBox knight_new = (PictureBox)tableLayoutPanel1.GetControlFromPosition(Knight.Y, Knight.X - 1);
+                if (knight_new.BackColor == Color.ForestGreen)
+                {
+                    Knight.X--;
+                    knight.Image = null;
+                    LoadKnight(knight_new, knight_direction);
+                }
+            }
+            //Left
+            if(direction==2)
+            {
+                PictureBox knight_new = (PictureBox)tableLayoutPanel1.GetControlFromPosition(Knight.Y-1, Knight.X);
+                if (knight_new.BackColor == Color.ForestGreen)
+                {
+                    Knight.Y--;
+                    knight.Image = null;
+                    knight_direction = 0;
+                    LoadKnight(knight_new, knight_direction);
+                    
+                }
+            }
+            //Right
+            if(direction==3)
+            {
+                PictureBox knight_new = (PictureBox)tableLayoutPanel1.GetControlFromPosition(Knight.Y + 1, Knight.X);
+                if (knight_new.BackColor == Color.ForestGreen)
+                {
+                    Knight.Y++;
+                    knight.Image = null;
+                    knight_direction = 1;
+                    LoadKnight(knight_new, knight_direction);
+                    
+                }
+            }
         }
 
-
+  
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
@@ -214,11 +256,46 @@ namespace Knight
                     }
                 
                     return true;
-                    //case (Keys.Left):
 
 
             }
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+
+
+
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            PictureBox knight = (PictureBox)tableLayoutPanel1.GetControlFromPosition(Knight.Y, Knight.X);
+            if (e.KeyCode == Keys.Down)
+            {
+                if (Knight.X < 7)
+                    MovingKnight(0);
+            }
+            if (e.KeyCode == Keys.Up)
+            {
+                if (Knight.X > 0)
+                    MovingKnight(1);
+            }
+            if(e.KeyCode == Keys.Left)
+            {
+                knight_direction = 0;
+                LoadKnight(knight, knight_direction);
+                if (Knight.Y > 0)
+                    MovingKnight(2);
+            }
+            if(e.KeyCode == Keys.Right)
+            {
+                knight_direction = 1;
+                LoadKnight(knight, knight_direction);
+                if (Knight.Y < 7)
+                    MovingKnight(3);
+            }
+
+
+
         }
     }
 }
