@@ -24,6 +24,7 @@ namespace Knight
         private bool pressed_space = false;
         private int[,] colours = new int[8, 8];
         private bool edit_mode = false;
+        private bool doors_opened = false;
 
         public Form1()
         {
@@ -120,6 +121,7 @@ namespace Knight
             colours = new int[size, size];
             MakingBoard();
             tableLayoutPanel1.Enabled = true;
+            doors_opened = false;
         }
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
@@ -211,6 +213,15 @@ namespace Knight
             src.MakeTransparent();
         }
 
+        private void LoadDoorsOpen(PictureBox box)
+        {
+            Bitmap src;
+            src = Properties.Resources.opened_door;
+            box.Image = src;
+            box.SizeMode = PictureBoxSizeMode.StretchImage;
+            src.MakeTransparent();
+        }
+
 
         private void putDoors()
         {
@@ -269,11 +280,25 @@ namespace Knight
             {
                 
                 PictureBox knight_new = (PictureBox)tableLayoutPanel1.GetControlFromPosition(Knight.Y, Knight.X+1);
+                
                 if(knight_new.BackColor == Color.ForestGreen)
                 {
-                    Knight.X++;
-                    knight.Image = null;
-                    LoadKnight(knight_new, knight_direction);
+                    Point KnightNew = Knight;
+                    KnightNew.X++;
+                    if(KnightNew != Doors)
+                    {
+                        Knight.X++;
+                        knight.Image = null;
+                        LoadKnight(knight_new, knight_direction);
+                    }
+                    else
+                    {
+                        if(doors_opened)
+                        {
+                            NewGame(bsize);
+                        }
+                    }
+                    
                 }
             }
             //Up
@@ -282,37 +307,88 @@ namespace Knight
                 PictureBox knight_new = (PictureBox)tableLayoutPanel1.GetControlFromPosition(Knight.Y, Knight.X - 1);
                 if (knight_new.BackColor == Color.ForestGreen)
                 {
-                    Knight.X--;
-                    knight.Image = null;
-                    LoadKnight(knight_new, knight_direction);
+
+                    Point KnightNew = Knight;
+                    KnightNew.X--;
+                    if (KnightNew != Doors)
+                    {
+                        Knight.X--;
+                        knight.Image = null;
+                        LoadKnight(knight_new, knight_direction);
+                    }
+                    else
+                    {
+                        if (doors_opened)
+                        {
+                            NewGame(bsize);
+                        }
+                    }
                 }
             }
             //Left
             if(direction==2)
             {
+         
                 PictureBox knight_new = (PictureBox)tableLayoutPanel1.GetControlFromPosition(Knight.Y-1, Knight.X);
                 if (knight_new.BackColor == Color.ForestGreen)
                 {
-                    Knight.Y--;
-                    knight.Image = null;
-                    knight_direction = 0;
-                    LoadKnight(knight_new, knight_direction);
-                    
+                    Point KnightNew = Knight;
+                    KnightNew.Y--;
+                    if (KnightNew != Doors)
+                    {
+                        Knight.Y--;
+                        knight.Image = null;
+                        LoadKnight(knight_new, knight_direction);
+                    }
+                    else
+                    {
+                        if (doors_opened)
+                        {
+                            NewGame(bsize);
+                        }
+                    }
                 }
             }
             //Right
             if(direction==3)
             {
-                PictureBox knight_new = (PictureBox)tableLayoutPanel1.GetControlFromPosition(Knight.Y + 1, Knight.X);
+                PictureBox knight_new = (PictureBox)tableLayoutPanel1.GetControlFromPosition(Knight.Y+1, Knight.X);
                 if (knight_new.BackColor == Color.ForestGreen)
                 {
-                    Knight.Y++;
-                    knight.Image = null;
-                    knight_direction = 1;
-                    LoadKnight(knight_new, knight_direction);
-                    
+                    Point KnightNew = Knight;
+                    KnightNew.Y++;
+                    if (KnightNew != Doors)
+                    {
+                        Knight.Y++;
+                        knight.Image = null;
+                        LoadKnight(knight_new, knight_direction);
+                    }
+                    else
+                    {
+                        if (doors_opened)
+                        {
+                            NewGame(bsize);
+                        }
+                    }
                 }
+
             }
+
+            if(Knight == Key)
+            {
+                for (int i = 0; i < Boxes.Count; ++i)
+                {
+                    if ((Point)Boxes.ElementAt(i).Tag == Doors)
+                    {
+                        LoadDoorsOpen(Boxes.ElementAt(i));
+                        doors_opened = true;
+
+                    }
+
+                }
+
+            }
+           
         }
 
   
