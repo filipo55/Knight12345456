@@ -12,7 +12,7 @@ namespace Knight
 {
     public partial class Form1 : Form
     {
-        private Form3 loadingscreen;
+        
         private int[,] board = new int [8,8];
         private int[,] board_elem = new int[8, 8];
         private Point Knight, Doors, Key;
@@ -26,18 +26,20 @@ namespace Knight
 
         public Form1()
         {
+            //Showing splash screen
             bool done1 = false;
             ThreadPool.QueueUserWorkItem((x) =>
             {
-                using (var splashForm = new Form3())
+                using (var splash = new Form3())
                 {
-                    splashForm.Show();
+                    splash.Show();
                     while (!done1)
                         Application.DoEvents();
-                    splashForm.Close();
+                    splash.Close();
                 }
             });
             Thread.Sleep(3000);
+            //Showing main window
             Show();
             InitializeComponent();
             Activate();
@@ -57,7 +59,6 @@ namespace Knight
             tableLayoutPanel1.Controls.Clear();
             tableLayoutPanel1.ColumnCount = board.GetLength(0);
             tableLayoutPanel1.RowCount = board.GetLength(1);
-
             for(int i =0; i<tableLayoutPanel1.ColumnCount;i++)
             {
                 tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, (float) 100.0 / board.GetLength(0)));
@@ -71,7 +72,6 @@ namespace Knight
                         BorderStyle = BorderStyle.None,
 
                     };
-
                     Margin(box);
                     //Choosing colours
                     if(i>0 && colours[i-1,j] == 0|| j > 0 && colours[i, j-1] == 0 || i < tableLayoutPanel1.ColumnCount - 1 && colours[i+1, j ] == 0 || j < tableLayoutPanel1.RowCount-1 && colours[i,j+1] == 0)
@@ -83,7 +83,6 @@ namespace Knight
                         else
                             box.BackColor = Color.ForestGreen;
                         tableLayoutPanel1.Controls.Add(box);
-                        
                     }
                     else
                     {
@@ -94,11 +93,8 @@ namespace Knight
                         else
                             box.BackColor = Color.ForestGreen;
                         tableLayoutPanel1.Controls.Add(box);
-                        
-
                     }
                 }
-
             }
             putKnight();
             putDoors();
@@ -121,8 +117,6 @@ namespace Knight
             colours = new int[size, size];
             MakingBoard();
             tableLayoutPanel1.Enabled = true;
-
-
         }
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
@@ -157,8 +151,6 @@ namespace Knight
             box.Image = src;
             box.SizeMode = PictureBoxSizeMode.StretchImage;
             src.MakeTransparent();
-           
-
         }
 
         private void putKnight()
@@ -205,7 +197,6 @@ namespace Knight
             box.Image = src;
             box.SizeMode = PictureBoxSizeMode.StretchImage;
             src.MakeTransparent();
-
         }
 
         private void LoadDoors(PictureBox box)
@@ -237,13 +228,9 @@ namespace Knight
                 }
 
             }
-
-
-
-
         }
 
-
+        //Settings
         private void settingsToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             Form2 Settings = new Form2();
@@ -331,9 +318,11 @@ namespace Knight
         {
             switch (keyData)
             {
+                //New Game
                 case (Keys.Control | Keys.N):
                     NewGame(bsize);
                     return true;
+                //Settings
                 case (Keys.Control | Keys.M):
                     {
                         Form2 Settings = new Form2();
@@ -367,7 +356,7 @@ namespace Knight
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
-
+        //Destroying walls
         private void Attack()
         {
             if (Knight.Y > 0)
@@ -390,13 +379,9 @@ namespace Knight
                 PictureBox down = (PictureBox)tableLayoutPanel1.GetControlFromPosition(Knight.Y, Knight.X + 1);
                 down.BackColor = Color.ForestGreen;
             }   
-            
-
-
-
         }
 
-
+        //Steering
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             PictureBox knight = (PictureBox)tableLayoutPanel1.GetControlFromPosition(Knight.Y, Knight.X);
@@ -433,19 +418,14 @@ namespace Knight
                 Attack();
                 pressed_space = true;
             }
-
-
-            
-
         }
 
+        //Protecting constant walking
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
             pressed_key = false;
             if (e.KeyCode == Keys.Space)
-                pressed_space = false;
-            
-                
+                pressed_space = false;      
         }
     }
 }
