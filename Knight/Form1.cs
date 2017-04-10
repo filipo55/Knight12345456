@@ -50,6 +50,7 @@ namespace Knight
             KeyDown += Form1_KeyDown;
             KeyUp += Form1_KeyUp;
             leftClickToolStripMenuItem.Visible = false;
+            grassToolStripMenuItem.Checked = true;
         }
 
       
@@ -405,7 +406,28 @@ namespace Knight
         //When box is clicked
         private void ClickingOnBox(object sender, MouseEventArgs e)
         {
-            if(e.Button == MouseButtons.Right && edit_mode)
+            if (wallToolStripMenuItem.CheckState == CheckState.Checked && edit_mode && e.Button == MouseButtons.Left)
+            {
+                var cellpos = tableLayoutPanel1.GetPositionFromControl((PictureBox)sender);
+                var pos = new Point(cellpos.Row, cellpos.Column);
+                var picbox = (PictureBox)tableLayoutPanel1.GetControlFromPosition(cellpos.Column, cellpos.Row);
+                if (picbox.BackColor == Color.ForestGreen && pos != Doors && pos != Knight && pos != Key)
+                {
+                    picbox.BackColor = Color.Maroon;
+                }
+                
+            }
+            else if (grassToolStripMenuItem.CheckState == CheckState.Checked && edit_mode && e.Button == MouseButtons.Left)
+            {
+                var cellpos = tableLayoutPanel1.GetPositionFromControl((PictureBox)sender);
+                var pos = new Point(cellpos.Row, cellpos.Column);
+                var picbox = (PictureBox)tableLayoutPanel1.GetControlFromPosition(cellpos.Column, cellpos.Row);
+                if (picbox.BackColor == Color.Maroon && pos != Doors && pos != Knight && pos != Key)
+                {
+                    picbox.BackColor = Color.ForestGreen;
+                }
+            }
+            else if(e.Button == MouseButtons.Right && edit_mode)
             {
                 var cellpos = tableLayoutPanel1.GetPositionFromControl((PictureBox)sender);
                 Point pos = new Point(cellpos.Row, cellpos.Column);
@@ -545,39 +567,42 @@ namespace Knight
         //Steering
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            PictureBox knight = (PictureBox)tableLayoutPanel1.GetControlFromPosition(Knight.Y, Knight.X);
-            if (e.KeyCode == Keys.Down)
+            if (!edit_mode)
             {
-                if (Knight.X < bsize-1 && !pressed_key)
-                    MovingKnight(0);
-                pressed_key = true;
-            }
-            if (e.KeyCode == Keys.Up)
-            {
-                if (Knight.X > 0 && !pressed_key)
-                    MovingKnight(1);
-                pressed_key = true;
-            }
-            if (e.KeyCode == Keys.Left)
-            {
-                knight_direction = 0;
-                LoadKnight(knight, knight_direction);
-                if (Knight.Y > 0 && !pressed_key)
-                    MovingKnight(2);
-                pressed_key = true;
-            }
-            if (e.KeyCode == Keys.Right)
-            {
-                knight_direction = 1;
-                LoadKnight(knight, knight_direction);
-                if (Knight.Y < bsize-1 && !pressed_key)
-                    MovingKnight(3);
-                pressed_key = true;
-            }
-            if(e.KeyCode == Keys.Space && !pressed_space)
-            {
-                Attack();
-                pressed_space = true;
+                PictureBox knight = (PictureBox)tableLayoutPanel1.GetControlFromPosition(Knight.Y, Knight.X);
+                if (e.KeyCode == Keys.Down)
+                {
+                    if (Knight.X < bsize - 1 && !pressed_key)
+                        MovingKnight(0);
+                    pressed_key = true;
+                }
+                if (e.KeyCode == Keys.Up)
+                {
+                    if (Knight.X > 0 && !pressed_key)
+                        MovingKnight(1);
+                    pressed_key = true;
+                }
+                if (e.KeyCode == Keys.Left)
+                {
+                    knight_direction = 0;
+                    LoadKnight(knight, knight_direction);
+                    if (Knight.Y > 0 && !pressed_key)
+                        MovingKnight(2);
+                    pressed_key = true;
+                }
+                if (e.KeyCode == Keys.Right)
+                {
+                    knight_direction = 1;
+                    LoadKnight(knight, knight_direction);
+                    if (Knight.Y < bsize - 1 && !pressed_key)
+                        MovingKnight(3);
+                    pressed_key = true;
+                }
+                if (e.KeyCode == Keys.Space && !pressed_space)
+                {
+                    Attack();
+                    pressed_space = true;
+                }
             }
         }
 
