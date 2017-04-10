@@ -7,11 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using System.Threading;
 namespace Knight
 {
     public partial class Form1 : Form
     {
+        private Form3 loadingscreen;
         private int[,] board = new int [8,8];
         private int[,] board_elem = new int[8, 8];
         private Point Knight, Doors, Key;
@@ -25,8 +26,26 @@ namespace Knight
 
         public Form1()
         {
+            bool done1 = false;
+            ThreadPool.QueueUserWorkItem((x) =>
+            {
+                using (var splashForm = new Form3())
+                {
+                    splashForm.Show();
+                    while (!done1)
+                        Application.DoEvents();
+                    splashForm.Close();
+                }
+            });
+            Thread.Sleep(3000);
+            Show();
             InitializeComponent();
+            Activate();
+            CenterToScreen();
+            TopMost = false;
             NewGame(8);
+            KeyDown += Form1_KeyDown;
+            KeyUp += Form1_KeyUp;
         }
 
       
@@ -54,6 +73,7 @@ namespace Knight
                     };
 
                     Margin(box);
+                    //Choosing colours
                     if(i>0 && colours[i-1,j] == 0|| j > 0 && colours[i, j-1] == 0 || i < tableLayoutPanel1.ColumnCount - 1 && colours[i+1, j ] == 0 || j < tableLayoutPanel1.RowCount-1 && colours[i,j+1] == 0)
                     {
                         int randomm = rand.Next(0, 2);

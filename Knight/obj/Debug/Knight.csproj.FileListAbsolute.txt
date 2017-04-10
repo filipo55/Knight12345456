@@ -8,3 +8,4 @@ C:\Users\Filip\Documents\Visual Studio 2015\Projects\Grafika\Knight\Knight\obj\D
 C:\Users\Filip\Documents\Visual Studio 2015\Projects\Grafika\Knight\Knight\obj\Debug\Knight.csproj.GenerateResource.Cache
 C:\Users\Filip\Documents\Visual Studio 2015\Projects\Grafika\Knight\Knight\obj\Debug\Knight.exe
 C:\Users\Filip\Documents\Visual Studio 2015\Projects\Grafika\Knight\Knight\obj\Debug\Knight.pdb
+C:\Users\Filip\Documents\Visual Studio 2015\Projects\Grafika\Knight\Knight\obj\Debug\Knight.Form3.resources
