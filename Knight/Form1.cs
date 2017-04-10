@@ -14,12 +14,13 @@ namespace Knight
     {
         private int[,] board = new int [8,8];
         private int[,] board_elem = new int[8, 8];
-        private Point Knight, Doors;
+        private Point Knight, Doors, Key;
         private Random rand = new Random();
         private List<PictureBox> Boxes;
         private int bsize = 8;
         private int knight_direction = 1;
         private bool pressed_key = false;
+        private bool pressed_space = false;
 
         public Form1()
         {
@@ -64,6 +65,7 @@ namespace Knight
             }
             putKnight();
             putDoors();
+            putKey();
         }
 
         private void Margin(Control contr)
@@ -138,6 +140,36 @@ namespace Knight
             }
         }
 
+        private void putKey()
+        {
+            int pos = rand.Next(0, Boxes.Count);
+            bool keyPlaced = false;
+            Key = (Point)Boxes.ElementAt(pos).Tag;
+            while (!keyPlaced)
+            {
+                if (Boxes.ElementAt(pos).BackColor == Color.ForestGreen && Key != Knight && Key!= Doors)
+                {
+                    LoadKey(Boxes.ElementAt(pos));
+                    keyPlaced = true;
+                }
+                else
+                {
+                    pos = rand.Next(0, Boxes.Count);
+                    Key = (Point)Boxes.ElementAt(pos).Tag;
+                }
+
+            }
+        }
+        private void LoadKey(PictureBox box)
+        {
+            Bitmap src;
+            src = Properties.Resources.key2;
+            box.Image = src;
+            box.SizeMode = PictureBoxSizeMode.StretchImage;
+            src.MakeTransparent();
+
+        }
+
         private void LoadDoors(PictureBox box)
         {
             Bitmap src;
@@ -155,7 +187,7 @@ namespace Knight
             Doors = (Point)Boxes.ElementAt(pos).Tag;
             while(!doorPlaced)
             {
-                if (Boxes.ElementAt(pos).BackColor == Color.ForestGreen && Doors!=Knight)
+                if (Boxes.ElementAt(pos).BackColor == Color.ForestGreen && Doors!=Knight && Doors!=Key)
                 {
                     LoadDoors(Boxes.ElementAt(pos));
                     doorPlaced = true;
@@ -298,7 +330,33 @@ namespace Knight
         }
 
 
+        private void Attack()
+        {
+            if (Knight.Y > 0)
+            {
+                PictureBox left = (PictureBox)tableLayoutPanel1.GetControlFromPosition(Knight.Y-1, Knight.X);
+                left.BackColor = Color.ForestGreen;
+            }
+            if(Knight.Y < bsize-1)
+            {
+                PictureBox right = (PictureBox)tableLayoutPanel1.GetControlFromPosition(Knight.Y + 1, Knight.X);
+                right.BackColor = Color.ForestGreen;
+            }
+            if(Knight.X > 0)
+            {
+                PictureBox up = (PictureBox)tableLayoutPanel1.GetControlFromPosition(Knight.Y, Knight.X -1);
+                up.BackColor = Color.ForestGreen;
+            }
+             if(Knight.X<bsize-1)
+            {
+                PictureBox down = (PictureBox)tableLayoutPanel1.GetControlFromPosition(Knight.Y, Knight.X + 1);
+                down.BackColor = Color.ForestGreen;
+            }   
+            
 
+
+
+        }
 
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
@@ -306,13 +364,15 @@ namespace Knight
             PictureBox knight = (PictureBox)tableLayoutPanel1.GetControlFromPosition(Knight.Y, Knight.X);
             if (e.KeyCode == Keys.Down)
             {
-                if (Knight.X < 7 && !pressed_key)
+                if (Knight.X < bsize-1 && !pressed_key)
                     MovingKnight(0);
+                pressed_key = true;
             }
             if (e.KeyCode == Keys.Up)
             {
                 if (Knight.X > 0 && !pressed_key)
                     MovingKnight(1);
+                pressed_key = true;
             }
             if (e.KeyCode == Keys.Left)
             {
@@ -320,22 +380,34 @@ namespace Knight
                 LoadKnight(knight, knight_direction);
                 if (Knight.Y > 0 && !pressed_key)
                     MovingKnight(2);
+                pressed_key = true;
             }
             if (e.KeyCode == Keys.Right)
             {
                 knight_direction = 1;
                 LoadKnight(knight, knight_direction);
-                if (Knight.Y < 7 && !pressed_key)
+                if (Knight.Y < bsize-1 && !pressed_key)
                     MovingKnight(3);
+                pressed_key = true;
+            }
+            if(e.KeyCode == Keys.Space && !pressed_space)
+            {
+                Attack();
+                pressed_space = true;
             }
 
-            pressed_key = true;
+
+            
 
         }
 
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
             pressed_key = false;
+            if (e.KeyCode == Keys.Space)
+                pressed_space = false;
+            
+                
         }
     }
 }
