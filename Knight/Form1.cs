@@ -15,7 +15,7 @@ namespace Knight
         
         private int[,] board = new int [8,8];
         private int[,] board_elem = new int[8, 8];
-        private Point Knight, Doors, Key;
+        private Point Knight, Doors, Key, menuPos, Nic;
         private Random rand = new Random();
         private List<PictureBox> Boxes;
         private int bsize = 8;
@@ -72,9 +72,9 @@ namespace Knight
                         Dock = DockStyle.Fill,
                         Tag = new Point(i, j),
                         BorderStyle = BorderStyle.None,
-
                     };
                     Margin(box);
+                    box.MouseClick += ClickingOnBox;
                     //Choosing colours
                     if(i>0 && colours[i-1,j] == 0|| j > 0 && colours[i, j-1] == 0 || i < tableLayoutPanel1.ColumnCount - 1 && colours[i+1, j ] == 0 || j < tableLayoutPanel1.RowCount-1 && colours[i,j+1] == 0)
                     {
@@ -402,6 +402,18 @@ namespace Knight
                 menuStrip1.BackColor = Color.Empty;
             }
         }
+        //When box is clicked
+        private void ClickingOnBox(object sender, MouseEventArgs e)
+        {
+            if(e.Button == MouseButtons.Right && edit_mode)
+            {
+                var cellpos = tableLayoutPanel1.GetPositionFromControl((PictureBox)sender);
+                Point pos = new Point(cellpos.Row, cellpos.Column);
+                menuPos = pos;
+                contextMenuStrip1.Show(tableLayoutPanel1.GetControlFromPosition(cellpos.Column, cellpos.Row), e.Location.X, e.Location.Y);
+            }
+            
+        }
 
         private void leftClickToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -418,6 +430,116 @@ namespace Knight
         {
             wallToolStripMenuItem.Checked = true;
             grassToolStripMenuItem.Checked = false;
+        }
+
+        private void doorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            PictureBox box = (PictureBox)tableLayoutPanel1.GetControlFromPosition(menuPos.Y, menuPos.X);
+            if (box.BackColor == Color.ForestGreen)
+            {
+                var cellpos = tableLayoutPanel1.GetPositionFromControl(box);
+                if ((cellpos.Column != Knight.Y || cellpos.Row != Knight.X) && (cellpos.Column != Key.Y || cellpos.Row != Key.X))
+                {
+                    for (int i = 0; i < Boxes.Count; ++i)
+                    {
+                        if ((Point)Boxes.ElementAt(i).Tag == Doors)
+                        {
+                            Boxes.ElementAt(i).Image = null;
+                            
+                        }
+                            
+                    }
+                    Doors.X = cellpos.Row;
+                    Doors.Y = cellpos.Column;
+                    LoadDoors(box);
+                }
+            }
+            if (box.BackColor == Color.Maroon)
+            {
+                box.BackColor = Color.ForestGreen;
+                var cellpos = tableLayoutPanel1.GetPositionFromControl(box);
+                for (int i = 0; i < Boxes.Count; ++i)
+                {
+                    if ((Point)Boxes.ElementAt(i).Tag == Doors)
+                        Boxes.ElementAt(i).Image = null;
+                }
+                Doors.X = cellpos.Row;
+                Doors.Y = cellpos.Column;
+                LoadDoors(box);
+            }
+        }
+
+        private void keyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            PictureBox box = (PictureBox)tableLayoutPanel1.GetControlFromPosition(menuPos.Y, menuPos.X);
+            if (box.BackColor == Color.ForestGreen)
+            {
+                var cellpos = tableLayoutPanel1.GetPositionFromControl(box);
+                if ((cellpos.Column != Knight.Y || cellpos.Row != Knight.X) && (cellpos.Column != Doors.Y || cellpos.Row != Doors.X))
+                {
+                    for (int i = 0; i < Boxes.Count; ++i)
+                    {
+                        if ((Point)Boxes.ElementAt(i).Tag == Key)
+                            Boxes.ElementAt(i).Image = null;
+
+                    }
+                    Key.X = cellpos.Row;
+                    Key.Y = cellpos.Column;
+                    LoadKey(box);
+                }
+            }
+            if (box.BackColor == Color.Maroon)
+            {
+                box.BackColor = Color.ForestGreen;
+                var cellpos = tableLayoutPanel1.GetPositionFromControl(box);
+                for (int i = 0; i < Boxes.Count; ++i)
+                {
+                    if ((Point)Boxes.ElementAt(i).Tag == Key)
+                        Boxes.ElementAt(i).Image = null;
+                }
+                Key.X = cellpos.Row;
+                Key.Y = cellpos.Column;
+                LoadKey(box);
+            }
+        }
+
+        private void knightToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            PictureBox box = (PictureBox)tableLayoutPanel1.GetControlFromPosition(menuPos.Y, menuPos.X);
+            if (box.BackColor == Color.ForestGreen)
+            {
+                var cellpos = tableLayoutPanel1.GetPositionFromControl(box);
+                if ((cellpos.Column != Key.Y || cellpos.Row != Key.X) && (cellpos.Column != Doors.Y || cellpos.Row != Doors.X))
+                {
+                    for (int i = 0; i < Boxes.Count; ++i)
+                    {
+                        if ((Point)Boxes.ElementAt(i).Tag == Knight)
+                            Boxes.ElementAt(i).Image = null;
+
+                    }
+                    Knight.X = cellpos.Row;
+                    Knight.Y = cellpos.Column;
+                    LoadKnight(box, 1);
+                }
+            }
+            if(box.BackColor == Color.Maroon)
+            {
+                box.BackColor = Color.ForestGreen;
+                var cellpos = tableLayoutPanel1.GetPositionFromControl(box);
+                for (int i = 0; i < Boxes.Count; ++i)
+                {
+                    if ((Point)Boxes.ElementAt(i).Tag == Knight)
+                        Boxes.ElementAt(i).Image = null;
+                }
+                Knight.X = cellpos.Row;
+                Knight.Y = cellpos.Column;
+                LoadKnight(box, 1);
+            }
+        }
+
+        private void contextMenuStrip1_Click(object sender, EventArgs e)
+        {
+
         }
 
         //Steering
