@@ -21,6 +21,7 @@ namespace Knight
         private int knight_direction = 1;
         private bool pressed_key = false;
         private bool pressed_space = false;
+        private int[,] colours = new int[8, 8];
 
         public Form1()
         {
@@ -53,13 +54,29 @@ namespace Knight
                     };
 
                     Margin(box);
-                    int randomm = rand.Next(0, 2);
-                    Boxes.Add(box);
-                    if (randomm == 0)
-                        box.BackColor = Color.Maroon;
+                    if(i>0 && colours[i-1,j] == 0|| j > 0 && colours[i, j-1] == 0 || i < tableLayoutPanel1.ColumnCount - 1 && colours[i+1, j ] == 0 || j < tableLayoutPanel1.RowCount-1 && colours[i,j+1] == 0)
+                    {
+                        int randomm = rand.Next(0, 2);
+                        Boxes.Add(box);
+                        if (randomm == 0)
+                            box.BackColor = Color.Maroon;
+                        else
+                            box.BackColor = Color.ForestGreen;
+                        tableLayoutPanel1.Controls.Add(box);
+                        
+                    }
                     else
-                        box.BackColor = Color.ForestGreen;
-                    tableLayoutPanel1.Controls.Add(box);
+                    {
+                        int randomm = rand.Next(0, 4);
+                        Boxes.Add(box);
+                        if (randomm == 0)
+                            box.BackColor = Color.Maroon;
+                        else
+                            box.BackColor = Color.ForestGreen;
+                        tableLayoutPanel1.Controls.Add(box);
+                        
+
+                    }
                 }
 
             }
@@ -81,6 +98,7 @@ namespace Knight
         private void NewGame(int size)
         {
             board = new int[size, size];
+            colours = new int[size, size];
             MakingBoard();
             tableLayoutPanel1.Enabled = true;
 
