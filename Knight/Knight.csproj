@@ -90,6 +90,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\key2.png" />
+    <None Include="Resources\opened_door.png" />
+    <None Include="Resources\closed_door.png" />
     <Content Include="Resources\knight.png" />
     <Content Include="Resources\knight2.png" />
     <None Include="Resources\knightR.bmp" />

@@ -14,11 +14,12 @@ namespace Knight
     {
         private int[,] board = new int [8,8];
         private int[,] board_elem = new int[8, 8];
-        private Point Knight;
+        private Point Knight, Doors;
         private Random rand = new Random();
         private List<PictureBox> Boxes;
         private int bsize = 8;
         private int knight_direction = 1;
+        private bool pressed_key = false;
 
         public Form1()
         {
@@ -62,6 +63,7 @@ namespace Knight
 
             }
             putKnight();
+            putDoors();
         }
 
         private void Margin(Control contr)
@@ -136,7 +138,40 @@ namespace Knight
             }
         }
 
+        private void LoadDoors(PictureBox box)
+        {
+            Bitmap src;
+            src = Properties.Resources.closed_door;
+            box.Image = src;
+            box.SizeMode = PictureBoxSizeMode.StretchImage;
+            src.MakeTransparent();
+        }
 
+
+        private void putDoors()
+        {
+            int pos = rand.Next(0, Boxes.Count);
+            bool doorPlaced = false;
+            Doors = (Point)Boxes.ElementAt(pos).Tag;
+            while(!doorPlaced)
+            {
+                if (Boxes.ElementAt(pos).BackColor == Color.ForestGreen && Doors!=Knight)
+                {
+                    LoadDoors(Boxes.ElementAt(pos));
+                    doorPlaced = true;
+                }
+                else
+                {
+                    pos = rand.Next(0, Boxes.Count);
+                    Doors = (Point)Boxes.ElementAt(pos).Tag;
+                }
+
+            }
+
+
+
+
+        }
 
 
         private void settingsToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -271,31 +306,36 @@ namespace Knight
             PictureBox knight = (PictureBox)tableLayoutPanel1.GetControlFromPosition(Knight.Y, Knight.X);
             if (e.KeyCode == Keys.Down)
             {
-                if (Knight.X < 7)
+                if (Knight.X < 7 && !pressed_key)
                     MovingKnight(0);
             }
             if (e.KeyCode == Keys.Up)
             {
-                if (Knight.X > 0)
+                if (Knight.X > 0 && !pressed_key)
                     MovingKnight(1);
             }
-            if(e.KeyCode == Keys.Left)
+            if (e.KeyCode == Keys.Left)
             {
                 knight_direction = 0;
                 LoadKnight(knight, knight_direction);
-                if (Knight.Y > 0)
+                if (Knight.Y > 0 && !pressed_key)
                     MovingKnight(2);
             }
-            if(e.KeyCode == Keys.Right)
+            if (e.KeyCode == Keys.Right)
             {
                 knight_direction = 1;
                 LoadKnight(knight, knight_direction);
-                if (Knight.Y < 7)
+                if (Knight.Y < 7 && !pressed_key)
                     MovingKnight(3);
             }
 
+            pressed_key = true;
 
+        }
 
+        private void Form1_KeyUp(object sender, KeyEventArgs e)
+        {
+            pressed_key = false;
         }
     }
 }
