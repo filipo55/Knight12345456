@@ -34,13 +34,19 @@
             this.settingsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.editModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.leftClickToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.grassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.wallToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.newGameToolStripMenuItem});
+            this.newGameToolStripMenuItem,
+            this.editModeToolStripMenuItem,
+            this.leftClickToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(825, 24);
@@ -91,6 +97,37 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(825, 572);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
+            // editModeToolStripMenuItem
+            // 
+            this.editModeToolStripMenuItem.Name = "editModeToolStripMenuItem";
+            this.editModeToolStripMenuItem.Size = new System.Drawing.Size(73, 20);
+            this.editModeToolStripMenuItem.Text = "Edit mode";
+            this.editModeToolStripMenuItem.Click += new System.EventHandler(this.editModeToolStripMenuItem_Click);
+            // 
+            // leftClickToolStripMenuItem
+            // 
+            this.leftClickToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.grassToolStripMenuItem,
+            this.wallToolStripMenuItem});
+            this.leftClickToolStripMenuItem.Name = "leftClickToolStripMenuItem";
+            this.leftClickToolStripMenuItem.Size = new System.Drawing.Size(66, 20);
+            this.leftClickToolStripMenuItem.Text = "Left click";
+            this.leftClickToolStripMenuItem.Click += new System.EventHandler(this.leftClickToolStripMenuItem_Click);
+            // 
+            // grassToolStripMenuItem
+            // 
+            this.grassToolStripMenuItem.Name = "grassToolStripMenuItem";
+            this.grassToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.grassToolStripMenuItem.Text = "Grass";
+            this.grassToolStripMenuItem.Click += new System.EventHandler(this.grassToolStripMenuItem_Click);
+            // 
+            // wallToolStripMenuItem
+            // 
+            this.wallToolStripMenuItem.Name = "wallToolStripMenuItem";
+            this.wallToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.wallToolStripMenuItem.Text = "Wall";
+            this.wallToolStripMenuItem.Click += new System.EventHandler(this.wallToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -120,6 +157,10 @@
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.ToolStripMenuItem editModeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem leftClickToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem grassToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem wallToolStripMenuItem;
     }
 }
 

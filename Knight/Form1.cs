@@ -23,6 +23,7 @@ namespace Knight
         private bool pressed_key = false;
         private bool pressed_space = false;
         private int[,] colours = new int[8, 8];
+        private bool edit_mode = false;
 
         public Form1()
         {
@@ -48,6 +49,7 @@ namespace Knight
             NewGame(8);
             KeyDown += Form1_KeyDown;
             KeyUp += Form1_KeyUp;
+            leftClickToolStripMenuItem.Visible = false;
         }
 
       
@@ -379,6 +381,43 @@ namespace Knight
                 PictureBox down = (PictureBox)tableLayoutPanel1.GetControlFromPosition(Knight.Y, Knight.X + 1);
                 down.BackColor = Color.ForestGreen;
             }   
+        }
+
+        private void editModeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            if(edit_mode == false)
+            {
+                edit_mode = true;
+                editModeToolStripMenuItem.Text = "Game mode";
+                leftClickToolStripMenuItem.Visible = true;
+                menuStrip1.BackColor = Color.Gold;
+                return;
+            }
+            if(edit_mode == true)
+            {
+                leftClickToolStripMenuItem.Visible = false;
+                edit_mode = false;
+                editModeToolStripMenuItem.Text = "Edit mode";
+                menuStrip1.BackColor = Color.Empty;
+            }
+        }
+
+        private void leftClickToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void grassToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            wallToolStripMenuItem.Checked = false;
+            grassToolStripMenuItem.Checked = true;
+        }
+
+        private void wallToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            wallToolStripMenuItem.Checked = true;
+            grassToolStripMenuItem.Checked = false;
         }
 
         //Steering

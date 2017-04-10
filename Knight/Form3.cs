@@ -8,10 +8,12 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Timers;
 namespace Knight
 {
     public partial class Form3 : Form
     {
+        public static bool elaps = false;
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HT_CAPTION = 0x2;
         [DllImportAttribute("user32.dll")]
@@ -28,6 +30,7 @@ int nBottomRect, // y-coordinate of lower-right corner
 int nWidthEllipse, // height of ellipse
 int nHeightEllipse // width of ellipse
 );
+       
 
         public Form3()
         {
@@ -56,7 +59,11 @@ int nHeightEllipse // width of ellipse
 
         private async void Fade(Form o, int interval)
         {
-            while(true){
+            System.Timers.Timer aTimer = new System.Timers.Timer();
+            aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+            aTimer.Interval = 3000;
+            aTimer.Enabled = true;
+            while (!elaps){
                 while (o.Opacity < 1.0)
                 {
                     await Task.Delay(interval);
@@ -71,7 +78,11 @@ int nHeightEllipse // width of ellipse
            
         }
 
-      
+        private static void OnTimedEvent(object source, EventArgs e)
+        {
+            elaps = true; 
+        }
+        
 
         private void label1_Click(object sender, EventArgs e)
         {
