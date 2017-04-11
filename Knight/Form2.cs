@@ -16,6 +16,7 @@ namespace Knight
         {
             InitializeComponent();
             comboBox1.Text = "8x8";
+            this.ShowInTaskbar = false;
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
