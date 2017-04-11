@@ -15,6 +15,7 @@ namespace Knight
         public Form2()
         {
             InitializeComponent();
+            comboBox1.Text = "8x8";
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)

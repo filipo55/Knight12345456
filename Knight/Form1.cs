@@ -78,24 +78,38 @@ namespace Knight
                     Margin(box);
                     box.MouseClick += ClickingOnBox;
                     //Choosing colours
-                    if(i>0 && colours[i-1,j] == 0|| j > 0 && colours[i, j-1] == 0 || i < tableLayoutPanel1.ColumnCount - 1 && colours[i+1, j ] == 0 || j < tableLayoutPanel1.RowCount-1 && colours[i,j+1] == 0)
+                    if(i>0 && colours[i-1,j] == 0|| j > 0 && colours[i, j-1] == 0)
                     {
                         int randomm = rand.Next(0, 2);
                         Boxes.Add(box);
                         if (randomm == 0)
+                        {
                             box.BackColor = Color.Maroon;
+                            colours[i, j] = 0;
+
+                        }
                         else
+                        {
                             box.BackColor = Color.ForestGreen;
+                            colours[i, j] = 1;
+                        }
                         tableLayoutPanel1.Controls.Add(box);
                     }
                     else
                     {
-                        int randomm = rand.Next(0, 4);
+                        int randomm = rand.Next(0, 5);
                         Boxes.Add(box);
                         if (randomm == 0)
+                        {
                             box.BackColor = Color.Maroon;
+                            colours[i, j] = 0;
+
+                        }
                         else
+                        {
                             box.BackColor = Color.ForestGreen;
+                            colours[i, j] = 1;
+                        }
                         tableLayoutPanel1.Controls.Add(box);
                     }
                 }
@@ -249,8 +263,8 @@ namespace Knight
         {
             Form2 Settings = new Form2();
             DialogResult res = Settings.ShowDialog(this);
-            if (res == DialogResult.Abort)
-                Settings.Close();
+            if (res == DialogResult.Cancel)
+                Settings.Dispose();
             else
             {
                 if (Settings.comboBox1.SelectedIndex == 0)
@@ -406,8 +420,8 @@ namespace Knight
                     {
                         Form2 Settings = new Form2();
                         DialogResult res = Settings.ShowDialog(this);
-                        if (res == DialogResult.Abort)
-                            Settings.Close();
+                        if (res == DialogResult.Cancel)
+                            Settings.Dispose();
                         else
                         {
                             if (Settings.comboBox1.SelectedIndex == 0)
@@ -550,6 +564,7 @@ namespace Knight
                     Doors.X = cellpos.Row;
                     Doors.Y = cellpos.Column;
                     LoadDoors(box);
+                    doors_opened = false;
                 }
             }
             if (box.BackColor == Color.Maroon)
